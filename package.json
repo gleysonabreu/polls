@@ -20,7 +20,9 @@
     "zod": "^3.19.1"
   },
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node src/server.js"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
