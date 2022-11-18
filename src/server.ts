@@ -13,7 +13,7 @@ async function bootstrap() {
   });
 
   await fastify.register(cors, {
-    origin: true,
+    origin: process.env.ALLOWED_ORIGIN_CORS.split(',').map(origin => origin.trim()),
     exposedHeaders: ['x-total-count'],
   });
 
