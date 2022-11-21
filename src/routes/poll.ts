@@ -31,7 +31,7 @@ export async function pollRoutes(fastify: FastifyInstance) {
     const rankingPoints = participants.map(participant => {
       let points = 0;
       participant.guesses.map(guess => {
-        if (guess.firstTeamPoints === guess.game.firstTeamScore && guess.secondTeamPoints === guess.secondTeamPoints) {
+        if (guess.firstTeamPoints === guess.game.firstTeamScore && guess.secondTeamPoints === guess.game.secondTeamScore) {
           points += 3;
         }
       });
