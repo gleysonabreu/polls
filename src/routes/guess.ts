@@ -11,6 +11,39 @@ export async function guessRoutes(fastify: FastifyInstance) {
     };
   });
 
+  fastify.get('/polls/:pollId/games/:gameId/guesses', { onRequest: [authenticate] }, async (request, reply) => {
+    const getGuessesParams = z.object({
+      pollId: z.string(),
+      gameId: z.string(),
+    });
+    const { pollId, gameId } = getGuessesParams.parse(request.params);
+
+    const game = await prisma.game.findUnique({
+      where: {
+        id: gameId,
+      },
+      include: {
+        guesses: {
+          include: {
+            participant: {
+              select: {
+                user: true,
+              }
+            }
+          },
+          where: {
+            participant: {
+              pollId,
+            }
+          }
+        }
+      }
+    });
+
+    return { game };
+
+  });
+
   fastify.post('/polls/:pollId/games/:gameId/guesses', { onRequest: [authenticate] }, async (request, reply) => {
     const createGuessParams = z.object({
       pollId: z.string(),
