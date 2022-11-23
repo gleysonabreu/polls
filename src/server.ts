@@ -9,7 +9,7 @@ import { gameRoutes } from './routes/game';
 
 async function bootstrap() {
   const fastify = Fastify({
-    logger: true,
+    logger: !!(process.env.NODE_ENV !== 'development'),
   });
 
   await fastify.register(cors, {
