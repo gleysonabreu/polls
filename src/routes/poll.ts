@@ -3,6 +3,8 @@ import ShortUniqueId from 'short-unique-id';
 import { prisma } from '../lib/prisma';
 import { FastifyInstance } from 'fastify';
 import { authenticate } from '../plugins/authenticate';
+import { createPollController } from '../modules/poll/useCases/createPoll';
+import { CreatePollControllerProps } from '../modules/poll/useCases/createPoll/create-poll-controller';
 
 export async function pollRoutes(fastify: FastifyInstance) {
   fastify.get(`/polls/:id/ranking`, { onRequest: [authenticate] }, async (req, _reply) => {
@@ -49,65 +51,7 @@ export async function pollRoutes(fastify: FastifyInstance) {
     return { ranking: sortRanking }
   });
 
-  fastify.post('/polls', { onRequest: [authenticate] }, async (req, reply) => {
-    const createPoolBody = z.object({
-      title: z.string()
-    });
-
-    const totalPolls = await prisma.poll.count({
-      where: {
-        ownerId: req.user.sub,
-      }
-    });
-
-    if (totalPolls > 15) {
-      return reply.status(400).send({ message: 'You have reached the poll creation limit.' });
-    }
-
-    const { title } = createPoolBody.parse(req.body);
-    const generate = new ShortUniqueId({ length: 6 });
-    const code = String(generate()).toUpperCase();
-
-    const poll = await prisma.poll.create({
-      data: {
-        title,
-        code,
-        ownerId: req.user.sub,
-
-        participants: {
-          create: {
-            userId: req.user.sub,
-          }
-        },
-      },
-      include: {
-        participants: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                avatarUrl: true,
-              }
-            }
-          },
-          take: 4,
-        },
-        _count: {
-          select: {
-            participants: true,
-          }
-        },
-        owner: {
-          select: {
-            name: true,
-            id: true
-          }
-        }
-      }
-    });
-
-    return reply.status(201).send(poll);
-  });
+  fastify.post<CreatePollControllerProps>('/polls', { onRequest: [authenticate] }, async (request, reply) => createPollController.handle(request, reply));
 
   fastify.get('/polls/count', async () => {
     const count = await prisma.poll.count();
