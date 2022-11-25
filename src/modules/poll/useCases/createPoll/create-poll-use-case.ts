@@ -17,7 +17,7 @@ export class CreatePollUseCase {
 
     const totalPolls = await this.pollsRepository.countByOwnerId(request.userId);
 
-    if (totalPolls > 15) {
+    if (totalPolls >= 15) {
       throw new Error('You have reached the poll creation limit.');
     }
 
