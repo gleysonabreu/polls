@@ -9,4 +9,5 @@ export interface PollsRepository {
   create: (data: CreatePollProps) => Promise<Poll>;
   countByOwnerId: (id: string) => Promise<number>;
   count: () => Promise<number>;
+  findById: (id: string) => Promise<Poll | null>;
 }

@@ -6,6 +6,8 @@ import { authenticate } from '../plugins/authenticate';
 import { createPollController } from '../modules/poll/useCases/createPoll';
 import { CreatePollControllerProps } from '../modules/poll/useCases/createPoll/create-poll-controller';
 import { countPollsController } from '../modules/poll/useCases/countPolls';
+import { getPollByIdController } from '../modules/poll/useCases/getPollById';
+import { GetPollByIdControllerProps } from '../modules/poll/useCases/getPollById/get-poll-by-id-controller';
 
 export async function pollRoutes(fastify: FastifyInstance) {
   fastify.get(`/polls/:id/ranking`, { onRequest: [authenticate] }, async (req, _reply) => {
@@ -203,45 +205,6 @@ export async function pollRoutes(fastify: FastifyInstance) {
     return reply.status(200).send({ polls });
   });
 
-  fastify.get('/polls/:id', async (request) => {
-    const getPollParams = z.object({
-      id: z.string(),
-    });
-
-    const { id } = getPollParams.parse(request.params);
-
-    const poll = await prisma.poll.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        participants: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                avatarUrl: true,
-              }
-            }
-          },
-          take: 4,
-        },
-        _count: {
-          select: {
-            participants: true,
-          }
-        },
-        owner: {
-          select: {
-            name: true,
-            id: true
-          }
-        }
-      }
-    });
-
-    return { poll }
-
-  });
+  fastify.get<GetPollByIdControllerProps>('/polls/:id', async (request, reply) => getPollByIdController.handle(request, reply));
 }
 
