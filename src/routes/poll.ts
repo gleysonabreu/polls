@@ -8,6 +8,8 @@ import { CreatePollControllerProps } from '../modules/poll/useCases/createPoll/c
 import { countPollsController } from '../modules/poll/useCases/countPolls';
 import { getPollByIdController } from '../modules/poll/useCases/getPollById';
 import { GetPollByIdControllerProps } from '../modules/poll/useCases/getPollById/get-poll-by-id-controller';
+import { getPollsController } from '../modules/poll/useCases/getPolls';
+import { GetPollsControllerProps } from '../modules/poll/useCases/getPolls/get-polls-controller';
 
 export async function pollRoutes(fastify: FastifyInstance) {
   fastify.get(`/polls/:id/ranking`, { onRequest: [authenticate] }, async (req, _reply) => {
@@ -143,68 +145,7 @@ export async function pollRoutes(fastify: FastifyInstance) {
     return reply.status(201).send(pollJoined);
   });
 
-  fastify.get('/polls', { onRequest: [authenticate] }, async (request, reply) => {
-    const paginationPollsQuery = z.object({
-      page: z.string().optional(),
-      perPage: z.string().optional(),
-    });
-
-    const { page, perPage } = paginationPollsQuery.parse(request.query);
-
-    const pageCalc = Number(page || 1) - 1;
-    const take = Number(perPage) || 10;
-    const skip = pageCalc * take;
-
-    const totalPolls = await prisma.poll.count({
-      where: {
-        participants: {
-          some: {
-            userId: request.user.sub,
-          }
-        }
-      }
-    });
-
-    const polls = await prisma.poll.findMany({
-      where: {
-        participants: {
-          some: {
-            userId: request.user.sub,
-          }
-        }
-      },
-      take,
-      skip,
-      include: {
-        participants: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                avatarUrl: true,
-              }
-            }
-          },
-          take: 4,
-        },
-        _count: {
-          select: {
-            participants: true,
-          }
-        },
-        owner: {
-          select: {
-            name: true,
-            id: true
-          }
-        }
-      }
-    });
-
-    reply.headers({ 'x-total-count': totalPolls });
-    return reply.status(200).send({ polls });
-  });
-
+  fastify.get<GetPollsControllerProps>('/polls', { onRequest: [authenticate] }, async (request, reply) => getPollsController.handle(request, reply));
   fastify.get<GetPollByIdControllerProps>('/polls/:id', async (request, reply) => getPollByIdController.handle(request, reply));
 }
 
