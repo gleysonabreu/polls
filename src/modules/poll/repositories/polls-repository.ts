@@ -8,4 +8,5 @@ export type CreatePollProps = {
 export interface PollsRepository {
   create: (data: CreatePollProps) => Promise<Poll>;
   countByOwnerId: (id: string) => Promise<number>;
+  count: () => Promise<number>;
 }

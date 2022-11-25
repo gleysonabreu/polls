@@ -5,6 +5,7 @@ import { FastifyInstance } from 'fastify';
 import { authenticate } from '../plugins/authenticate';
 import { createPollController } from '../modules/poll/useCases/createPoll';
 import { CreatePollControllerProps } from '../modules/poll/useCases/createPoll/create-poll-controller';
+import { countPollsController } from '../modules/poll/useCases/countPolls';
 
 export async function pollRoutes(fastify: FastifyInstance) {
   fastify.get(`/polls/:id/ranking`, { onRequest: [authenticate] }, async (req, _reply) => {
@@ -53,12 +54,7 @@ export async function pollRoutes(fastify: FastifyInstance) {
 
   fastify.post<CreatePollControllerProps>('/polls', { onRequest: [authenticate] }, async (request, reply) => createPollController.handle(request, reply));
 
-  fastify.get('/polls/count', async () => {
-    const count = await prisma.poll.count();
-    return {
-      count,
-    };
-  });
+  fastify.get('/polls/count', async (request, reply) => countPollsController.handle(request, reply));
 
   fastify.post('/polls/join', { onRequest: [authenticate] }, async (req, reply) => {
     const joinPollBody = z.object({

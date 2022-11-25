@@ -3,6 +3,10 @@ import { prisma } from '../../../../../lib/prisma';
 import { CreatePollProps, PollsRepository } from "../../../repositories/polls-repository";
 
 export class PollsRepositoryPrisma implements PollsRepository {
+  async count(): Promise<number> {
+    return prisma.poll.count();
+  }
+
   async countByOwnerId(id: string): Promise<number> {
     return prisma.poll.count({
       where: {
