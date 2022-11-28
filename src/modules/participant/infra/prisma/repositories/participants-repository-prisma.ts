@@ -1,9 +1,8 @@
-import { Participant } from "@prisma/client";
-import { ParticipantsRepository } from "../../../repositories/participants-repository";
+import { ParticipantsRepository, ReturnPaticipantByPollId } from "../../../repositories/participants-repository";
 import { prisma } from '../../../../../lib/prisma';
 
 export class ParticipantsRepositoryPrisma implements ParticipantsRepository {
-  async getParticipantsByPollId(id: string): Promise<Participant[]> {
+  async getParticipantsByPollId(id: string): Promise<ReturnPaticipantByPollId[]> {
     const participants = await prisma.participant.findMany({
       where: {
         pollId: id,
