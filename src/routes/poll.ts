@@ -1,5 +1,4 @@
 import z from 'zod';
-import ShortUniqueId from 'short-unique-id';
 import { prisma } from '../lib/prisma';
 import { FastifyInstance } from 'fastify';
 import { authenticate } from '../plugins/authenticate';
@@ -10,51 +9,11 @@ import { getPollByIdController } from '../modules/poll/useCases/getPollById';
 import { GetPollByIdControllerProps } from '../modules/poll/useCases/getPollById/get-poll-by-id-controller';
 import { getPollsController } from '../modules/poll/useCases/getPolls';
 import { GetPollsControllerProps } from '../modules/poll/useCases/getPolls/get-polls-controller';
+import { getRankingController } from '../modules/poll/useCases/getRanking';
+import { GetRankingControllerProps } from '../modules/poll/useCases/getRanking/get-ranking-controller';
 
 export async function pollRoutes(fastify: FastifyInstance) {
-  fastify.get(`/polls/:id/ranking`, { onRequest: [authenticate] }, async (req, _reply) => {
-    const getPollParam = z.object({
-      id: z.string(),
-    });
-
-    const { id } = getPollParam.parse(req.params);
-
-    const participants = await prisma.participant.findMany({
-      where: {
-        pollId: id,
-      },
-      include: {
-        user: true,
-        guesses: {
-          select: {
-            firstTeamPoints: true,
-            secondTeamPoints: true,
-            game: true,
-          }
-        }
-      }
-    });
-
-    const rankingPoints = participants.map(participant => {
-      let points = 0;
-      participant.guesses.map(guess => {
-        if (guess.firstTeamPoints === guess.game.firstTeamScore && guess.secondTeamPoints === guess.game.secondTeamScore) {
-          points += 3;
-        }
-      });
-
-      return {
-        id: participant.user.id,
-        avatarUrl: participant.user.avatarUrl,
-        name: participant.user.name,
-        points,
-      }
-    });
-
-
-    const sortRanking = rankingPoints.sort((a, b) => b.points - a.points);
-    return { ranking: sortRanking }
-  });
+  fastify.get<GetRankingControllerProps>(`/polls/:id/ranking`, { onRequest: [authenticate] }, async (request, reply) => getRankingController.handle(request, reply));
 
   fastify.post<CreatePollControllerProps>('/polls', { onRequest: [authenticate] }, async (request, reply) => createPollController.handle(request, reply));
 
