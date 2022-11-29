@@ -39,6 +39,7 @@ export async function pollRoutes(fastify: FastifyInstance) {
 
   fastify
     .get<GetPollByIdControllerProps>('/polls/:id',
+      { onRequest: [authenticate] },
       async (request, reply) => getPollByIdController.handle(request, reply));
 }
 
