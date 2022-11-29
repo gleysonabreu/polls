@@ -1,8 +1,23 @@
 import { Poll } from '@prisma/client';
 import { prisma } from '../../../../../lib/prisma';
-import { CreatePollProps, GetPollsUserProps, PollsRepository } from "../../../repositories/polls-repository";
+import { CreatePollProps, GetPollsUserProps, PollByCodeWithParticipants, PollsRepository, ReturnGetPollByCode } from "../../../repositories/polls-repository";
 
 export class PollsRepositoryPrisma implements PollsRepository {
+  async findPollByCodeWithUserParticipants({ code, userId }: PollByCodeWithParticipants): Promise<ReturnGetPollByCode | null> {
+    return prisma.poll.findUnique({
+      where: {
+        code,
+      },
+      include: {
+        participants: {
+          where: {
+            userId,
+          }
+        },
+      }
+    });
+  }
+
   async getPollsUser({ userId, skip, take }: GetPollsUserProps): Promise<Poll[]> {
     const polls = await prisma.poll.findMany({
       where: {
@@ -56,9 +71,9 @@ export class PollsRepositoryPrisma implements PollsRepository {
   }
 
   async findById(id: string): Promise<Poll | null> {
-    const poll = await prisma.poll.findUnique({
+    const poll = await prisma.poll.findFirst({
       where: {
-        id,
+        OR: [{ id }, { code: id }]
       },
       include: {
         participants: {

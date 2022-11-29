@@ -9,6 +9,13 @@ export type ReturnPaticipantByPollId = (Participant & {
   }[];
 });
 
+export type CreateParticipation = {
+  userId: string;
+  pollId: string;
+};
+
 export interface ParticipantsRepository {
+  create: ({ userId, pollId }: CreateParticipation) => Promise<void>;
   getParticipantsByPollId: (id: string) => Promise<ReturnPaticipantByPollId[]>;
+  getTotalPollsUserJoined: (userId: string) => Promise<number>;
 }
