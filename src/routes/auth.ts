@@ -6,9 +6,12 @@ import { authenticate } from "../plugins/authenticate";
 
 
 export async function authRoutes(fastify: FastifyInstance) {
-  fastify.get('/me', { onRequest: [authenticate] }, async (req, _reply) => {
-    return { user: req.user };
-  });
+  fastify
+    .get('/me',
+      { onRequest: [authenticate] },
+      async (req, _reply) => { return { user: req.user } });
 
-  fastify.post<CreateUserProps>('/users', async (request, reply) => createUserController.handle(request, reply, fastify));
+  fastify
+    .post<CreateUserProps>('/users',
+      async (request, reply) => createUserController.handle(request, reply, fastify));
 }

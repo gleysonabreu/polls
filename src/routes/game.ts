@@ -4,5 +4,8 @@ import { RequestGamesPaginationProps } from "../modules/game/useCases/gamesWithP
 import { authenticate } from "../plugins/authenticate";
 
 export async function gameRoutes(fastify: FastifyInstance) {
-  fastify.get<RequestGamesPaginationProps>('/polls/:id/games', { onRequest: [authenticate] }, async (request, reply) => gamesWithPaginationController.handle(request, reply));
+  fastify
+    .get<RequestGamesPaginationProps>('/polls/:id/games',
+      { onRequest: [authenticate] },
+      async (request, reply) => gamesWithPaginationController.handle(request, reply));
 }
