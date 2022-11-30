@@ -6,7 +6,7 @@ export const adaptRoute = (controller: Controller) => {
     const request = {
       ...(req.body || {}),
       ...(req.params || {}),
-      userId: req.user.sub,
+      userId: req.user?.sub,
     };
 
     const httpResponse = await controller.handle(request);
