@@ -1,15 +1,11 @@
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { prisma } from '../lib/prisma';
+import { countGuessesController } from "../modules/guess/useCases/countGuesses";
 import { authenticate } from "../plugins/authenticate";
 
 export async function guessRoutes(fastify: FastifyInstance) {
-  fastify.get('/guesses/count', async () => {
-    const count = await prisma.guess.count();
-    return {
-      count,
-    };
-  });
+  fastify.get('/guesses/count', async (request, reply) => countGuessesController.handle(request, reply));
 
   fastify.get('/polls/:pollId/games/:gameId/guesses', { onRequest: [authenticate] }, async (request, reply) => {
     const getGuessesParams = z.object({
