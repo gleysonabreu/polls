@@ -18,4 +18,5 @@ export interface ParticipantsRepository {
   create: ({ userId, pollId }: CreateParticipation) => Promise<void>;
   getParticipantsByPollId: (id: string) => Promise<ReturnPaticipantByPollId[]>;
   getTotalPollsUserJoined: (userId: string) => Promise<number>;
+  findParticipantByPollIdAndUserId: (pollId: string, userId: string) => Promise<Participant | null>;
 }

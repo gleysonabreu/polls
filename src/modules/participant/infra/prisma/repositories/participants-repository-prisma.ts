@@ -1,7 +1,19 @@
 import { CreateParticipation, ParticipantsRepository, ReturnPaticipantByPollId } from "../../../repositories/participants-repository";
 import { prisma } from '../../../../../lib/prisma';
+import { Participant } from "@prisma/client";
 
 export class ParticipantsRepositoryPrisma implements ParticipantsRepository {
+  async findParticipantByPollIdAndUserId(pollId: string, userId: string): Promise<Participant | null> {
+    return prisma.participant.findUnique({
+      where: {
+        userId_pollId: {
+          userId,
+          pollId,
+        }
+      }
+    });
+  }
+
   async create({ userId, pollId }: CreateParticipation): Promise<void> {
     await prisma.participant.create({
       data: {

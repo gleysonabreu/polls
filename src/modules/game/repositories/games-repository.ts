@@ -26,6 +26,7 @@ export type ReturnGetGameGuesses = (Game & {
 }) | null;
 
 export interface GamesRepository {
+  findById: (id: string) => Promise<Game | null>;
   getGameGuesses: (data: GetGameGuessesProps) => Promise<ReturnGetGameGuesses>;
   getGamesWithPagination: (data: GamesWithPaginationProps) => Promise<GamesWithPaginationReturn>;
 }

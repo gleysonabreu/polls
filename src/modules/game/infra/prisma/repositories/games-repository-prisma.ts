@@ -1,7 +1,16 @@
+import { Game } from '@prisma/client';
 import { prisma } from '../../../../../lib/prisma';
 import { GamesRepository, GamesWithPaginationProps, GamesWithPaginationReturn, GetGameGuessesProps, ReturnGetGameGuesses } from "../../../repositories/games-repository";
 
 export class GamesRepositoryPrisma implements GamesRepository {
+  async findById(id: string): Promise<Game | null> {
+    return prisma.game.findUnique({
+      where: {
+        id,
+      }
+    });
+  };
+
   async getGameGuesses({ gameId, pollId }: GetGameGuessesProps): Promise<ReturnGetGameGuesses> {
     return prisma.game.findUnique({
       where: {
