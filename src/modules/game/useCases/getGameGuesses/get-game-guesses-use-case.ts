@@ -17,6 +17,6 @@ export class GetGameGuessesUseCase {
     const { pollId, gameId } = getGuessesParams.parse(request);
 
     const game = await this.gamesRepository.getGameGuesses({ pollId, gameId });
-    return game;
+    return { game };
   }
 }

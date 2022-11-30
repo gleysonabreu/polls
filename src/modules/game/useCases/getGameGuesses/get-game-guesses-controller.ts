@@ -1,20 +1,26 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { ok, serverError } from "../../../../helpers/http-helper";
+import { Controller } from "../../../../protocols/controller";
+import { HttpResponse } from "../../../../protocols/http";
 import { GetGameGuessesUseCase } from "./get-game-guesses-use-case";
 
-export type GetGameGuessesControllerProps = {
-  Params: {
+export namespace GetGameGuessesController {
+  export type Request = {
     pollId: string;
     gameId: string;
   }
 }
 
-export class GetGameGuessesController {
+export class GetGameGuessesController implements Controller {
   constructor(private getGameGuessesUseCase: GetGameGuessesUseCase) { }
 
-  async handle(request: FastifyRequest<GetGameGuessesControllerProps>, _reply: FastifyReply) {
-    const { gameId, pollId } = request.params;
+  async handle(request: GetGameGuessesController.Request): Promise<HttpResponse> {
+    const { gameId, pollId } = request;
 
-    const game = await this.getGameGuessesUseCase.execute({ pollId, gameId });
-    return { game };
+    try {
+      const gameResult = await this.getGameGuessesUseCase.execute({ pollId, gameId });
+      return ok(gameResult);
+    } catch (error: any) {
+      return serverError(error);
+    }
   }
 }
