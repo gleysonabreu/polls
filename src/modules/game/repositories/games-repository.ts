@@ -1,4 +1,4 @@
-import { Game, Guess } from "@prisma/client";
+import { User, Game, Guess } from "@prisma/client";
 
 export type GamesWithPaginationProps = {
   pollId: string;
@@ -12,6 +12,20 @@ export type GamesWithPaginationReturn = {
   total: number;
 }
 
+export type GetGameGuessesProps = {
+  pollId: string;
+  gameId: string;
+}
+
+export type ReturnGetGameGuesses = (Game & {
+  guesses: (Guess & {
+    participant: {
+      user: User;
+    };
+  })[];
+}) | null;
+
 export interface GamesRepository {
+  getGameGuesses: (data: GetGameGuessesProps) => Promise<ReturnGetGameGuesses>;
   getGamesWithPagination: (data: GamesWithPaginationProps) => Promise<GamesWithPaginationReturn>;
 }

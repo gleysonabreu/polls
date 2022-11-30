@@ -1,44 +1,20 @@
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { prisma } from '../lib/prisma';
+import { getGameGuessesController } from "../modules/game/useCases/getGameGuesses";
+import { GetGameGuessesControllerProps } from "../modules/game/useCases/getGameGuesses/get-game-guesses-controller";
 import { countGuessesController } from "../modules/guess/useCases/countGuesses";
 import { authenticate } from "../plugins/authenticate";
 
 export async function guessRoutes(fastify: FastifyInstance) {
-  fastify.get('/guesses/count', async (request, reply) => countGuessesController.handle(request, reply));
+  fastify
+    .get('/guesses/count',
+      async (request, reply) => countGuessesController.handle(request, reply));
 
-  fastify.get('/polls/:pollId/games/:gameId/guesses', { onRequest: [authenticate] }, async (request, reply) => {
-    const getGuessesParams = z.object({
-      pollId: z.string(),
-      gameId: z.string(),
-    });
-    const { pollId, gameId } = getGuessesParams.parse(request.params);
-
-    const game = await prisma.game.findUnique({
-      where: {
-        id: gameId,
-      },
-      include: {
-        guesses: {
-          include: {
-            participant: {
-              select: {
-                user: true,
-              }
-            }
-          },
-          where: {
-            participant: {
-              pollId,
-            }
-          }
-        }
-      }
-    });
-
-    return { game };
-
-  });
+  fastify
+    .get<GetGameGuessesControllerProps>('/polls/:pollId/games/:gameId/guesses',
+      { onRequest: [authenticate] },
+      async (request, reply) => getGameGuessesController.handle(request, reply));
 
   fastify.post('/polls/:pollId/games/:gameId/guesses', { onRequest: [authenticate] }, async (request, reply) => {
     const createGuessParams = z.object({
