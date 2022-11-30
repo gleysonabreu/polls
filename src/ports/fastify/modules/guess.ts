@@ -1,5 +1,5 @@
 import { makeGetGameGuessesController } from "../../../modules/game/useCases/getGameGuesses";
-import { countGuessesController } from "../../../modules/guess/useCases/countGuesses";
+import { makeCountGuessesController } from "../../../modules/guess/useCases/countGuesses";
 import { createGuessController } from "../../../modules/guess/useCases/createGuess";
 import { CreateGuessControllerProps } from "../../../modules/guess/useCases/createGuess/create-guess-controller";
 import { authenticate } from "../../../plugins/authenticate";
@@ -8,7 +8,8 @@ import { app } from "../server";
 
 app
   .get('/api/v1/guesses/count',
-    async (request, reply) => countGuessesController.handle(request, reply));
+    adaptRoute(makeCountGuessesController())
+  );
 
 app
   .get('/api/v1/polls/:pollId/games/:gameId/guesses',
