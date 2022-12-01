@@ -1,33 +1,32 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { ok } from "../../../../helpers/http-helper";
+import { Controller } from "../../../../protocols/controller";
 import { GamesWithPaginationUseCase } from "./games-with-pagination-use-case";
 
-export type RequestGamesPaginationProps = {
-  Params: {
+export namespace GamesWithPaginationController {
+  export type Request = {
     id: string;
-  };
-  Querystring: {
     page?: string;
     perPage?: string;
+    userId: string;
   }
 }
 
-export class GamesWithPaginationController {
+export class GamesWithPaginationController implements Controller {
   constructor(private gamesWithPaginationUseCase: GamesWithPaginationUseCase) { }
 
-  async handle(request: FastifyRequest<RequestGamesPaginationProps>, reply: FastifyReply) {
-    const { id } = request.params;
-    const { perPage, page } = request.query;
+  async handle(request: GamesWithPaginationController.Request) {
+    const { id, page, perPage, userId } = request;
 
     const { games, total } = await this.gamesWithPaginationUseCase.execute({
       id,
-      userId: request.user.sub,
+      userId,
       page,
       perPage
     });
 
-    reply.headers({ 'x-total-count': total });
-    return {
-      games,
+    const headers = {
+      'x-total-count': total,
     };
+    return ok({ games }, headers);
   }
 }
