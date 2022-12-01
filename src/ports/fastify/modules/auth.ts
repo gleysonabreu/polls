@@ -1,6 +1,6 @@
-import { createUserController } from "../../../modules/user/useCases/createUser";
-import { CreateUserProps } from "../../../modules/user/useCases/createUser/CreateUserController";
+import { makeCreateUserController } from "../../../modules/user/useCases/createUser";
 import { authenticate } from "../../../plugins/authenticate";
+import { adaptRoute } from "../fastify-route-adapter";
 import { app } from '../server';
 
 app
@@ -9,5 +9,6 @@ app
     async (req, _reply) => { return { user: req.user } });
 
 app
-  .post<CreateUserProps>('/api/v1/users',
-    async (request, reply) => createUserController.handle(request, reply, app));
+  .post('/api/v1/users',
+    adaptRoute(makeCreateUserController())
+  );

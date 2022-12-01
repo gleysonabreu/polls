@@ -1,4 +1,5 @@
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import * as jwt from '../../../../ports/adapters/jwt';
 
 import { z } from "zod";
 
@@ -44,6 +45,12 @@ export class CreateUserUseCase {
       });
     }
 
-    return { user };
+    const token = await jwt.generateToken({
+      name: user.name,
+      avatarUrl: user.avatarUrl,
+      id: user.id,
+    });
+
+    return token;
   }
 }

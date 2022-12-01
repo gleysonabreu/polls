@@ -1,28 +1,23 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { ok, serverError } from "../../../../helpers/http-helper";
+import { Controller } from "../../../../protocols/controller";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
-export type CreateUserProps = {
-  Body: {
+export namespace CreateUserController {
+  export type Request = {
     access_token: string;
-  };
+  }
 }
 
-
-export class CreateUserController {
+export class CreateUserController implements Controller {
   constructor(private createUserUseCase: CreateUserUseCase) { }
 
-  async handle(request: FastifyRequest<CreateUserProps>, _reply: FastifyReply, fastify: FastifyInstance) {
-    const { access_token } = request.body;
-    const { user } = await this.createUserUseCase.execute({ access_token });
-
-    const token = fastify.jwt.sign({
-      name: user.name,
-      avatarUrl: user.avatarUrl,
-    }, {
-      sub: user.id,
-      expiresIn: '1d',
-    });
-
-    return { token };
+  async handle(request: CreateUserController.Request) {
+    const { access_token } = request;
+    try {
+      const token = await this.createUserUseCase.execute({ access_token });
+      return ok({ token });
+    } catch (error: any) {
+      return serverError(error);
+    }
   }
 }
