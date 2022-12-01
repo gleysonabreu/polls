@@ -1,20 +1,24 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { ok, serverError } from "../../../../helpers/http-helper";
+import { Controller } from "../../../../protocols/controller";
 import { CreatePollUseCase } from "./create-poll-use-case";
 
-export type CreatePollControllerProps = {
-  Body: {
+export namespace CreatePollController {
+  export type Request = {
     title: string;
+    userId: string;
   }
 }
 
-export class CreatePollController {
+export class CreatePollController implements Controller {
   constructor(private createPollUseCase: CreatePollUseCase) { }
 
-  async handle(request: FastifyRequest<CreatePollControllerProps>, reply: FastifyReply) {
-    const { title } = request.body;
-    const userId = request.user.sub;
-
-    const poll = await this.createPollUseCase.execute({ title, userId });
-    return reply.status(201).send(poll);
+  async handle(request: CreatePollController.Request) {
+    const { title, userId } = request;
+    try {
+      const poll = await this.createPollUseCase.execute({ title, userId });
+      return ok(poll);
+    } catch (error: any) {
+      return serverError(error);
+    }
   }
 }

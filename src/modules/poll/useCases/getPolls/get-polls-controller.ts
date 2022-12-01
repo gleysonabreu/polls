@@ -1,26 +1,34 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { ok, serverError } from "../../../../helpers/http-helper";
+import { Controller } from "../../../../protocols/controller";
 import { GetPollsUseCase } from "./get-polls-use-case";
 
-export type GetPollsControllerProps = {
-  Querystring: {
+export namespace GetPollsController {
+  export type Request = {
     page?: string;
     perPage?: string;
+    userId: string;
   }
-};
+}
 
-export class GetPollsController {
+export class GetPollsController implements Controller {
   constructor(private getPollsUseCase: GetPollsUseCase) { }
 
-  async handle(request: FastifyRequest<GetPollsControllerProps>, reply: FastifyReply) {
-    const { page, perPage } = request.query;
+  async handle(request: GetPollsController.Request) {
+    const { page, perPage, userId } = request;
 
-    const { totalPolls, polls } = await this.getPollsUseCase.execute({
-      userId: request.user.sub,
-      page,
-      perPage,
-    });
+    try {
+      const { totalPolls, polls } = await this.getPollsUseCase.execute({
+        userId,
+        page,
+        perPage,
+      });
 
-    reply.headers({ 'x-total-count': totalPolls });
-    return reply.status(200).send({ polls });
+      const headers = {
+        'x-total-count': totalPolls
+      }
+      return ok({ polls }, headers);
+    } catch (error: any) {
+      return serverError(error);
+    }
   }
 }

@@ -1,23 +1,29 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { ok, serverError } from "../../../../helpers/http-helper";
+import { Controller } from "../../../../protocols/controller";
 import { JoinPollUseCase } from "./join-poll-use-case";
 
-export type JoinPollControllerProps = {
-  Body: {
+export namespace JoinPollController {
+  export type Request = {
     code: string;
-  };
-};
+    userId: string;
+  }
+}
 
-export class JoinPollController {
+export class JoinPollController implements Controller {
   constructor(private joinPollUseCase: JoinPollUseCase) { }
 
-  async handle(request: FastifyRequest<JoinPollControllerProps>, reply: FastifyReply) {
-    const { code } = request.body;
+  async handle(request: JoinPollController.Request) {
+    const { code, userId } = request;
 
-    const poll = await this.joinPollUseCase.execute({
-      code,
-      userId: request.user.sub,
-    });
+    try {
+      const poll = await this.joinPollUseCase.execute({
+        code,
+        userId,
+      });
+      return ok(poll);
+    } catch (error: any) {
+      return serverError(error);
+    }
 
-    return reply.status(201).send(poll);
   }
 }
