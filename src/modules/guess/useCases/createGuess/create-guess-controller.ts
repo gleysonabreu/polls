@@ -1,32 +1,35 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { ok, serverError } from "../../../../helpers/http-helper";
+import { Controller } from "../../../../protocols/controller";
 import { CreateGuessUseCase } from "./create-guess-use-case";
 
-export type CreateGuessControllerProps = {
-  Params: {
+export namespace CreateGuessController {
+  export type Request = {
     pollId: string;
     gameId: string;
-  };
-  Body: {
     firstTeamPoints: number;
     secondTeamPoints: number;
+    userId: string;
   }
-};
+}
 
-export class CreateGuessController {
+export class CreateGuessController implements Controller {
   constructor(private createGuessUseCase: CreateGuessUseCase) { }
 
-  async handle(request: FastifyRequest<CreateGuessControllerProps>, reply: FastifyReply) {
-    const { gameId, pollId } = request.params;
-    const { firstTeamPoints, secondTeamPoints } = request.body;
+  async handle(request: CreateGuessController.Request) {
+    const { gameId, pollId, firstTeamPoints, secondTeamPoints, userId } = request;
 
-    const guess = await this.createGuessUseCase.execute({
-      secondTeamPoints,
-      firstTeamPoints,
-      pollId,
-      gameId,
-      userId: request.user.sub,
-    });
+    try {
+      const guess = await this.createGuessUseCase.execute({
+        secondTeamPoints,
+        firstTeamPoints,
+        pollId,
+        gameId,
+        userId,
+      });
 
-    return reply.status(201).send(guess);
+      return ok(guess);
+    } catch (error: any) {
+      return serverError(error);
+    }
   }
 }
