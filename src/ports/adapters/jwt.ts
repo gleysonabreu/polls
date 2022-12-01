@@ -4,7 +4,7 @@ type ExpirationTime = string;
 type PayloadJWT = {
   name: string;
   id: string;
-  avatarUrl: string;
+  avatarUrl: string | null;
 }
 
 

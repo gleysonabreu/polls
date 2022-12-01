@@ -2,7 +2,7 @@ import { app } from "../fastify/server";
 
 type PayloadJWT = {
   name: string;
-  avatarUrl: string;
+  avatarUrl: string | null;
   id: string;
 }
 
