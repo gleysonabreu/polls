@@ -1,12 +1,16 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { ok } from "../../../../helpers/http-helper";
 import { CountUserUseCase } from "./CountUserUseCase";
+
+export namespace CountUserController {
+  export type Request = {}
+}
 
 export class CountUserController {
   constructor(private countUserUseCase: CountUserUseCase) { }
 
-  async handle(_request: FastifyRequest, _reply: FastifyReply) {
+  async handle(_request: CountUserController.Request) {
     const count = await this.countUserUseCase.execute();
 
-    return { count };
+    return ok({ count });
   }
 }
