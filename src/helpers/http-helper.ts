@@ -22,9 +22,10 @@ export const serverError = (error: Error): HttpResponse => ({
   body: new ServerError(error.stack || '')
 })
 
-export const ok = (data: any): HttpResponse => ({
+export const ok = (data: any, headers?: any): HttpResponse => ({
   statusCode: 200,
-  body: data
+  body: data,
+  headers,
 })
 
 export const noContent = (): HttpResponse => ({
