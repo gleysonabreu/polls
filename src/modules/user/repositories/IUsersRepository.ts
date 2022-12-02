@@ -1,16 +1,11 @@
-import { User } from "@prisma/client";
+import { User } from '../entities/user';
 
 export type GetHomepageProps = {
   id: string;
   avatarUrl: string | null;
 }
 
-export type CreateUser = {
-  email: string;
-  googleId: string;
-  name: string;
-  avatarUrl: string | null;
-}
+export type CreateUser = Omit<User, 'id' | 'createdAt'>
 
 export interface IUsersRepository {
   findByGoogleId: (id: string) => Promise<User | null>;

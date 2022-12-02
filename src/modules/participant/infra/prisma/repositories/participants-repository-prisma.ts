@@ -1,6 +1,6 @@
 import { CreateParticipation, ParticipantsRepository, ReturnPaticipantByPollId } from "../../../repositories/participants-repository";
 import { prisma } from '../../../../../lib/prisma';
-import { Participant } from "@prisma/client";
+import { Participant } from '../../../entities/participant';
 
 export class ParticipantsRepositoryPrisma implements ParticipantsRepository {
   async findParticipantByPollIdAndUserId(pollId: string, userId: string): Promise<Participant | null> {

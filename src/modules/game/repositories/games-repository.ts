@@ -1,4 +1,6 @@
-import { User, Game, Guess } from "@prisma/client";
+import { Game } from '../entities/game';
+import { Guess } from '../../guess/entities/guess';
+import { User } from '../../user/entities/user';
 
 export type GamesWithPaginationProps = {
   pollId: string;

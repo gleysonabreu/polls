@@ -1,4 +1,4 @@
-import { Game } from '@prisma/client';
+import { Game } from '../../../entities/game';
 import { prisma } from '../../../../../lib/prisma';
 import { GamesRepository, GamesWithPaginationProps, GamesWithPaginationReturn, GetGameGuessesProps, ReturnGetGameGuesses } from "../../../repositories/games-repository";
 

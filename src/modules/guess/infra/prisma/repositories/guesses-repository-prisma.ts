@@ -1,6 +1,6 @@
 import { CreateGuessProps, GuessesRepository } from "../../../repositories/guesses-repository";
 import { prisma } from '../../../../../lib/prisma';
-import { Guess } from "@prisma/client";
+import { Guess } from '../../../entities/guess';
 
 export class GuessesRepositoryPrisma implements GuessesRepository {
   async create({ secondTeamPoints, firstTeamPoints, gameId, participantId }: CreateGuessProps): Promise<Guess> {

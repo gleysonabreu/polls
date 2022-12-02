@@ -1,10 +1,9 @@
-import { Participant, Poll } from "@prisma/client";
+import { Poll } from '../entities/poll';
+import { Participant } from '../../participant/entities/participant';
 
-export type CreatePollProps = {
-  title: string;
-  code: string;
+export type CreatePollProps = Omit<Poll, 'id' | 'createdAt' | 'ownerId'> & {
   userId: string;
-}
+};
 
 export type GetPollsUserProps = {
   userId: string;

@@ -1,4 +1,6 @@
-import { Game, Participant, User } from "@prisma/client";
+import { Game } from '../../game/entities/game';
+import { Participant } from '../entities/participant';
+import { User } from '../../user/entities/user';
 
 export type ReturnPaticipantByPollId = (Participant & {
   user: User;
@@ -9,10 +11,7 @@ export type ReturnPaticipantByPollId = (Participant & {
   }[];
 });
 
-export type CreateParticipation = {
-  userId: string;
-  pollId: string;
-};
+export type CreateParticipation = Omit<Participant, 'id'>;
 
 export interface ParticipantsRepository {
   create: ({ userId, pollId }: CreateParticipation) => Promise<void>;

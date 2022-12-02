@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { User } from '../../../entities/user';
 import { prisma } from '../../../../../lib/prisma';
 import { CreateUser, GetHomepageProps, IUsersRepository } from "../../../repositories/IUsersRepository";
 

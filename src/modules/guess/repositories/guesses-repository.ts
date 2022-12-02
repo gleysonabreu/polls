@@ -1,11 +1,6 @@
-import { Guess } from "@prisma/client";
+import { Guess } from '../entities/guess';
 
-export type CreateGuessProps = {
-  firstTeamPoints: number;
-  secondTeamPoints: number;
-  gameId: string;
-  participantId: string;
-};
+export type CreateGuessProps = Omit<Guess, 'id' | 'createdAt'>
 
 export interface GuessesRepository {
   create: (data: CreateGuessProps) => Promise<Guess>;
