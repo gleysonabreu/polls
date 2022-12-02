@@ -1,9 +1,10 @@
-import { CreateGuessProps, GuessesRepository } from "../../../repositories/guesses-repository";
+import { GuessesRepository } from "../../../repositories/guesses-repository";
 import { prisma } from '../../../../../lib/prisma';
 import { Guess } from '../../../entities/guess';
+import { CreateGuess } from "../../../repositories/types";
 
 export class GuessesRepositoryPrisma implements GuessesRepository {
-  async create({ secondTeamPoints, firstTeamPoints, gameId, participantId }: CreateGuessProps): Promise<Guess> {
+  async create({ secondTeamPoints, firstTeamPoints, gameId, participantId }: CreateGuess): Promise<Guess> {
     return prisma.guess.create({
       data: {
         firstTeamPoints,

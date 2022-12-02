@@ -1,15 +1,10 @@
 import { ok, serverError } from "../../../../helpers/http-helper";
 import { Controller } from "../../../../protocols/controller";
+import { CreateGuessDTO } from "../../dtos/create-guess-dto";
 import { CreateGuessUseCase } from "./create-guess-use-case";
 
 export namespace CreateGuessController {
-  export type Request = {
-    pollId: string;
-    gameId: string;
-    firstTeamPoints: number;
-    secondTeamPoints: number;
-    userId: string;
-  }
+  export type Request = CreateGuessDTO
 }
 
 export class CreateGuessController implements Controller {

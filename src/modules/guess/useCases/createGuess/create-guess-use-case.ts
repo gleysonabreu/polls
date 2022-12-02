@@ -2,14 +2,7 @@ import { GuessesRepository } from "../../repositories/guesses-repository";
 import z from 'zod';
 import { ParticipantsRepository } from "../../../participant/repositories/participants-repository";
 import { GamesRepository } from "../../../game/repositories/games-repository";
-
-type CreateGuessUseCaseProps = {
-  pollId: string;
-  gameId: string;
-  firstTeamPoints: number;
-  secondTeamPoints: number;
-  userId: string;
-};
+import { CreateGuessDTO } from "../../dtos/create-guess-dto";
 
 export class CreateGuessUseCase {
   constructor(
@@ -18,7 +11,7 @@ export class CreateGuessUseCase {
     private gamesRepository: GamesRepository,
   ) { }
 
-  async execute(request: CreateGuessUseCaseProps) {
+  async execute(request: CreateGuessDTO) {
     const createGuessParams = z.object({
       pollId: z.string(),
       gameId: z.string(),
