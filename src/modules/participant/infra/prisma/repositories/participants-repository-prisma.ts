@@ -1,6 +1,7 @@
-import { CreateParticipation, ParticipantsRepository, ReturnPaticipantByPollId } from "../../../repositories/participants-repository";
+import { ParticipantsRepository } from "../../../repositories/participants-repository";
 import { prisma } from '../../../../../lib/prisma';
 import { Participant } from '../../../entities/participant';
+import { CreateParticipation, PaticipantByPollId } from "../../../repositories/types";
 
 export class ParticipantsRepositoryPrisma implements ParticipantsRepository {
   async findParticipantByPollIdAndUserId(pollId: string, userId: string): Promise<Participant | null> {
@@ -36,7 +37,7 @@ export class ParticipantsRepositoryPrisma implements ParticipantsRepository {
     });
   }
 
-  async getParticipantsByPollId(id: string): Promise<ReturnPaticipantByPollId[]> {
+  async getParticipantsByPollId(id: string): Promise<PaticipantByPollId[]> {
     const participants = await prisma.participant.findMany({
       where: {
         pollId: id,
