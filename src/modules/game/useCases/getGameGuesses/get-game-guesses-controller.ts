@@ -1,13 +1,11 @@
 import { ok, serverError } from "../../../../helpers/http-helper";
 import { Controller } from "../../../../protocols/controller";
 import { HttpResponse } from "../../../../protocols/http";
+import { GetGameGuessesDTO } from "../../dtos/get-game-guesses-dto";
 import { GetGameGuessesUseCase } from "./get-game-guesses-use-case";
 
 export namespace GetGameGuessesController {
-  export type Request = {
-    pollId: string;
-    gameId: string;
-  }
+  export type Request = GetGameGuessesDTO;
 }
 
 export class GetGameGuessesController implements Controller {

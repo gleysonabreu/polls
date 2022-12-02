@@ -1,14 +1,10 @@
 import { ok } from "../../../../helpers/http-helper";
 import { Controller } from "../../../../protocols/controller";
+import { GamesWithPaginationDTO } from "../../dtos/games-with-pagination-dto";
 import { GamesWithPaginationUseCase } from "./games-with-pagination-use-case";
 
 export namespace GamesWithPaginationController {
-  export type Request = {
-    id: string;
-    page?: string;
-    perPage?: string;
-    userId: string;
-  }
+  export type Request = GamesWithPaginationDTO;
 }
 
 export class GamesWithPaginationController implements Controller {

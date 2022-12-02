@@ -1,17 +1,11 @@
 import { GamesRepository } from "../../repositories/games-repository";
 import z from 'zod';
-
-type GamesWithPaginationUseCaseProps = {
-  id: string;
-  userId: string;
-  page?: string;
-  perPage?: string;
-};
+import { GamesWithPaginationDTO } from "../../dtos/games-with-pagination-dto";
 
 export class GamesWithPaginationUseCase {
   constructor(private gamesRepository: GamesRepository) { }
 
-  async execute({ userId, ...request }: GamesWithPaginationUseCaseProps) {
+  async execute({ userId, ...request }: GamesWithPaginationDTO) {
     const getPollParam = z.object({
       id: z.string(),
     });

@@ -1,15 +1,11 @@
 import { GamesRepository } from "../../repositories/games-repository";
 import z from 'zod';
-
-type GetGameGuessesUseCaseProps = {
-  gameId: string;
-  pollId: string;
-};
+import { GetGameGuessesDTO } from "../../dtos/get-game-guesses-dto";
 
 export class GetGameGuessesUseCase {
   constructor(private gamesRepository: GamesRepository) { }
 
-  async execute(request: GetGameGuessesUseCaseProps) {
+  async execute(request: GetGameGuessesDTO) {
     const getGuessesParams = z.object({
       pollId: z.string(),
       gameId: z.string(),

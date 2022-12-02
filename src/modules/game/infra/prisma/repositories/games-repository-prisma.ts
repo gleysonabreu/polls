@@ -1,6 +1,12 @@
 import { Game } from '../../../entities/game';
 import { prisma } from '../../../../../lib/prisma';
-import { GamesRepository, GamesWithPaginationProps, GamesWithPaginationReturn, GetGameGuessesProps, ReturnGetGameGuesses } from "../../../repositories/games-repository";
+import { GamesRepository } from "../../../repositories/games-repository";
+import {
+  GamesWithPagination,
+  GamesWithPaginationData,
+  GetGameGuesses,
+  GetGameGuessesData
+} from '../../../repositories/types';
 
 export class GamesRepositoryPrisma implements GamesRepository {
   async findById(id: string): Promise<Game | null> {
@@ -11,7 +17,7 @@ export class GamesRepositoryPrisma implements GamesRepository {
     });
   };
 
-  async getGameGuesses({ gameId, pollId }: GetGameGuessesProps): Promise<ReturnGetGameGuesses> {
+  async getGameGuesses({ gameId, pollId }: GetGameGuessesData): Promise<GetGameGuesses> {
     return prisma.game.findUnique({
       where: {
         id: gameId,
@@ -35,7 +41,7 @@ export class GamesRepositoryPrisma implements GamesRepository {
     });
   };
 
-  async getGamesWithPagination({ skip, take, pollId, userId }: GamesWithPaginationProps): Promise<GamesWithPaginationReturn> {
+  async getGamesWithPagination({ skip, take, pollId, userId }: GamesWithPaginationData): Promise<GamesWithPagination> {
     const [games, allGames] = await prisma.$transaction([
       prisma.game.findMany({
         orderBy: {
