@@ -1,5 +1,5 @@
 import { Controller } from "../../../../protocols/controller";
-import { UsersRepositoryPrisma } from "../../infra/prisma/repositories/UsersRepositoryPrisma";
+import { UsersRepositoryPrisma } from "../../infra/prisma/repositories/users-repository-prisma";
 import { CountUserController } from "./CountUserController";
 import { CountUserUseCase } from "./CountUserUseCase";
 

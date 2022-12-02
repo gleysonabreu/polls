@@ -1,5 +1,5 @@
 import { Controller } from "../../../../protocols/controller";
-import { UsersRepositoryPrisma } from "../../infra/prisma/repositories/UsersRepositoryPrisma";
+import { UsersRepositoryPrisma } from "../../infra/prisma/repositories/users-repository-prisma";
 import { CreateUserController } from "./CreateUserController";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 

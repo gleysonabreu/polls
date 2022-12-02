@@ -1,8 +1,8 @@
 import { User } from '../../../entities/user';
 import { prisma } from '../../../../../lib/prisma';
-import { CreateUser, GetHomepageProps, IUsersRepository } from "../../../repositories/IUsersRepository";
+import { CreateUser, GetHomepageProps, UsersRepository } from "../../../repositories/users-repository";
 
-export class UsersRepositoryPrisma implements IUsersRepository {
+export class UsersRepositoryPrisma implements UsersRepository {
   async create({ name, email, googleId, avatarUrl }: CreateUser): Promise<User> {
     const user = await prisma.user.create({
       data: {

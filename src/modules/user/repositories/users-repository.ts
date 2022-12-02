@@ -7,7 +7,7 @@ export type GetHomepageProps = {
 
 export type CreateUser = Omit<User, 'id' | 'createdAt'>
 
-export interface IUsersRepository {
+export interface UsersRepository {
   findByGoogleId: (id: string) => Promise<User | null>;
   create: (user: CreateUser) => Promise<User>;
   count: () => Promise<number>;
