@@ -1,12 +1,10 @@
 import { ok, serverError } from "../../../../helpers/http-helper";
 import { Controller } from "../../../../protocols/controller";
+import { JoinPollDTO } from "../../dtos/join-poll-dto";
 import { JoinPollUseCase } from "./join-poll-use-case";
 
 export namespace JoinPollController {
-  export type Request = {
-    code: string;
-    userId: string;
-  }
+  export type Request = JoinPollDTO;
 }
 
 export class JoinPollController implements Controller {

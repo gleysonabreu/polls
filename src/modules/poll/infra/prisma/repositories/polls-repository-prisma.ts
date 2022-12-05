@@ -1,9 +1,15 @@
 import { Poll } from '@prisma/client';
 import { prisma } from '../../../../../lib/prisma';
-import { CreatePollProps, GetPollsUserProps, PollByCodeWithParticipants, PollsRepository, ReturnGetPollByCode } from "../../../repositories/polls-repository";
+import { PollsRepository } from '../../../repositories/polls-repository';
+import {
+  CreatePoll,
+  GetPollByCode,
+  GetPollsUserPagination,
+  PollByCodeWithParticipants
+} from '../../../repositories/types';
 
 export class PollsRepositoryPrisma implements PollsRepository {
-  async findPollByCodeWithUserParticipants({ code, userId }: PollByCodeWithParticipants): Promise<ReturnGetPollByCode | null> {
+  async findPollByCodeWithUserParticipants({ code, userId }: PollByCodeWithParticipants): Promise<GetPollByCode | null> {
     return prisma.poll.findUnique({
       where: {
         code,
@@ -18,7 +24,7 @@ export class PollsRepositoryPrisma implements PollsRepository {
     });
   }
 
-  async getPollsUser({ userId, skip, take }: GetPollsUserProps): Promise<Poll[]> {
+  async getPollsUser({ userId, skip, take }: GetPollsUserPagination): Promise<Poll[]> {
     const polls = await prisma.poll.findMany({
       where: {
         participants: {
@@ -116,7 +122,7 @@ export class PollsRepositoryPrisma implements PollsRepository {
     });
   };
 
-  async create({ code, title, userId }: CreatePollProps): Promise<Poll> {
+  async create({ code, title, userId }: CreatePoll): Promise<Poll> {
     const poll = await prisma.poll.create({
       data: {
         title,

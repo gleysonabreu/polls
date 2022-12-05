@@ -1,11 +1,7 @@
 import { PollsRepository } from "../../repositories/polls-repository";
 import z from 'zod';
 import { ParticipantsRepository } from "../../../participant/repositories/participants-repository";
-
-type JoinPollUseCaseProps = {
-  code: string;
-  userId: string;
-};
+import { JoinPollDTO } from "../../dtos/join-poll-dto";
 
 export class JoinPollUseCase {
   constructor(
@@ -13,7 +9,7 @@ export class JoinPollUseCase {
     private participantsRepository: ParticipantsRepository
   ) { }
 
-  async execute(request: JoinPollUseCaseProps) {
+  async execute(request: JoinPollDTO) {
     const joinPollBody = z.object({
       code: z.string(),
       userId: z.string(),

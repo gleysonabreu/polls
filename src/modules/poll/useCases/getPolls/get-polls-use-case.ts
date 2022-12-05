@@ -1,16 +1,11 @@
 import { PollsRepository } from "../../repositories/polls-repository";
 import z from 'zod';
-
-type GetPollsUseCaseProps = {
-  page?: string;
-  perPage?: string;
-  userId: string;
-};
+import { GetPollsDTO } from "../../dtos/get-polls-dto";
 
 export class GetPollsUseCase {
   constructor(private pollsRepository: PollsRepository) { }
 
-  async execute(request: GetPollsUseCaseProps) {
+  async execute(request: GetPollsDTO) {
     const paginationPollsQuery = z.object({
       page: z.string().optional(),
       perPage: z.string().optional(),

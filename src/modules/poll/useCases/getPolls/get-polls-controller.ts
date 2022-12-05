@@ -1,13 +1,10 @@
 import { ok, serverError } from "../../../../helpers/http-helper";
 import { Controller } from "../../../../protocols/controller";
+import { GetPollsDTO } from "../../dtos/get-polls-dto";
 import { GetPollsUseCase } from "./get-polls-use-case";
 
 export namespace GetPollsController {
-  export type Request = {
-    page?: string;
-    perPage?: string;
-    userId: string;
-  }
+  export type Request = GetPollsDTO;
 }
 
 export class GetPollsController implements Controller {

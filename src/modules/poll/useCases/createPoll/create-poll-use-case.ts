@@ -1,16 +1,12 @@
 import { PollsRepository } from "../../repositories/polls-repository";
 import z from 'zod';
 import ShortUniqueId from "short-unique-id";
-
-type CreatePollProps = {
-  title: string;
-  userId: string;
-}
+import { CreatePollDTO } from '../../dtos/create-poll-dto';
 
 export class CreatePollUseCase {
   constructor(private pollsRepository: PollsRepository) { }
 
-  async execute(request: CreatePollProps) {
+  async execute(request: CreatePollDTO) {
     const createPoolBody = z.object({
       title: z.string()
     });

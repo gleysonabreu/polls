@@ -1,12 +1,10 @@
 import { ok, serverError } from "../../../../helpers/http-helper";
 import { Controller } from "../../../../protocols/controller";
+import { CreatePollDTO } from "../../dtos/create-poll-dto";
 import { CreatePollUseCase } from "./create-poll-use-case";
 
 export namespace CreatePollController {
-  export type Request = {
-    title: string;
-    userId: string;
-  }
+  export type Request = CreatePollDTO;
 }
 
 export class CreatePollController implements Controller {
