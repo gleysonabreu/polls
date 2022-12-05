@@ -1,5 +1,5 @@
 import { makeCreateUserController } from "../../../modules/user/useCases/createUser";
-import { authenticate } from "../../../plugins/authenticate";
+import { authenticate } from "../plugins/authenticate";
 import { adaptRoute } from "../fastify-route-adapter";
 import { app } from '../server';
 

@@ -5,7 +5,7 @@ import { makeJoinPollController } from '../../../modules/poll/useCases/joinPoll'
 import { makeGetRankingController } from '../../../modules/poll/useCases/getRanking';
 import { makeCreatePollController } from '../../../modules/poll/useCases/createPoll';
 
-import { authenticate } from '../../../plugins/authenticate';
+import { authenticate } from '../plugins/authenticate';
 import { app } from '../server';
 import { adaptRoute } from '../fastify-route-adapter';
 

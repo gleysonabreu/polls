@@ -1,7 +1,7 @@
 import { makeGetGameGuessesController } from "../../../modules/game/useCases/getGameGuesses";
 import { makeCountGuessesController } from "../../../modules/guess/useCases/countGuesses";
 import { makeCreateGuessController } from "../../../modules/guess/useCases/createGuess";
-import { authenticate } from "../../../plugins/authenticate";
+import { authenticate } from "../plugins/authenticate";
 import { adaptRoute } from "../fastify-route-adapter";
 import { app } from "../server";
 
