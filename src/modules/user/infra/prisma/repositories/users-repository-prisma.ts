@@ -1,6 +1,7 @@
 import { User } from '../../../entities/user';
 import { prisma } from '../../../../../lib/prisma';
-import { CreateUser, GetHomepageProps, UsersRepository } from "../../../repositories/users-repository";
+import { UsersRepository } from "../../../repositories/users-repository";
+import { CreateUser, GetHomePage } from '../../../repositories/types';
 
 export class UsersRepositoryPrisma implements UsersRepository {
   async create({ name, email, googleId, avatarUrl }: CreateUser): Promise<User> {
@@ -31,7 +32,7 @@ export class UsersRepositoryPrisma implements UsersRepository {
     return count;
   };
 
-  async getHomepage(): Promise<GetHomepageProps[]> {
+  async getHomepage(): Promise<GetHomePage[]> {
     const users = await prisma.user.findMany({
       select: {
         id: true,

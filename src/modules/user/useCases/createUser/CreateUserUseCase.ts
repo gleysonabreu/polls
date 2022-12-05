@@ -1,4 +1,4 @@
-import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { UsersRepository } from "../../repositories/users-repository";
 import * as jwt from '../../../../ports/adapters/jwt';
 
 import { z } from "zod";
@@ -8,7 +8,7 @@ type Request = {
 }
 
 export class CreateUserUseCase {
-  constructor(private usersRepository: IUsersRepository) { }
+  constructor(private usersRepository: UsersRepository) { }
 
   async execute(request: Request) {
     const createUserBody = z.object({
