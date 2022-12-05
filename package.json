@@ -27,7 +27,10 @@
     "docker:destroy": "docker-compose down --volumes --remove-orphans",
     "server": "tsx watch src/index.ts",
     "build": "rimraf build && tsc",
-    "start": "node build/index.js"
+    "start": "node build/index.js",
+    "migrate": "prisma migrate dev --name",
+    "migration": "prisma migrate dev",
+    "migration:prod": "prisma migrate deploy"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
