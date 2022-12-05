@@ -1,7 +1,7 @@
 import { Controller } from "../../../../protocols/controller";
 import { UsersRepositoryPrisma } from "../../infra/prisma/repositories/users-repository-prisma";
-import { CountUserController } from "./CountUserController";
-import { CountUserUseCase } from "./CountUserUseCase";
+import { CountUserController } from "./count-user-controller";
+import { CountUserUseCase } from "./count-user-use-case";
 
 export const makeCountUserController = (): Controller => {
   const usersRepository = new UsersRepositoryPrisma();

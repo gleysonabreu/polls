@@ -1,6 +1,6 @@
 import { ok, serverError } from "../../../../helpers/http-helper";
 import { Controller } from "../../../../protocols/controller";
-import { CreateUserUseCase } from "./CreateUserUseCase";
+import { CreateUserUseCase } from "./create-user-use-case";
 
 export namespace CreateUserController {
   export type Request = {

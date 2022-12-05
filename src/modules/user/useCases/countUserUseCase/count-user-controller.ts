@@ -1,5 +1,5 @@
 import { ok } from "../../../../helpers/http-helper";
-import { CountUserUseCase } from "./CountUserUseCase";
+import { CountUserUseCase } from "./count-user-use-case";
 
 export namespace CountUserController {
   export type Request = {}

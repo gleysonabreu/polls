@@ -1,6 +1,6 @@
 import { ok, serverError } from "../../../../helpers/http-helper";
 import { Controller } from "../../../../protocols/controller";
-import { Get4UsersUseCase } from "./Get4UsersUseCase";
+import { Get4UsersUseCase } from "./get4-users-use-case";
 
 export namespace Get4UsersController {
   export type Request = {}
