@@ -1,5 +1,5 @@
 export type Game = {
-  id: string
+  id?: string
   date: Date
   firstTeamCountryCode: string
   secondTeamCountryCode: string
