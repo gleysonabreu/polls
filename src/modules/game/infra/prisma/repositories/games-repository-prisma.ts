@@ -2,6 +2,7 @@ import { Game } from '../../../entities/game';
 import { prisma } from '../../../../../lib/prisma';
 import { GamesRepository } from "../../../repositories/games-repository";
 import {
+  CreateGame,
   GamesWithPagination,
   GamesWithPaginationData,
   GetGameGuesses,
@@ -9,6 +10,12 @@ import {
 } from '../../../repositories/types';
 
 export class GamesRepositoryPrisma implements GamesRepository {
+  async create(data: CreateGame): Promise<Game> {
+    return prisma.game.create({
+      data,
+    })
+  };
+
   async findById(id: string): Promise<Game | null> {
     return prisma.game.findUnique({
       where: {
