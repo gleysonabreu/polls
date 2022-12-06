@@ -7,7 +7,7 @@ export class GamesWithPaginationUseCase {
 
   async execute({ userId, ...request }: GamesWithPaginationDTO) {
     const getPollParam = z.object({
-      id: z.string(),
+      id: z.string().min(1),
     });
 
     const { id } = getPollParam.parse(request);
