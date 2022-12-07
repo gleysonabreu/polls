@@ -7,8 +7,8 @@ export class GetGameGuessesUseCase {
 
   async execute(request: GetGameGuessesDTO) {
     const getGuessesParams = z.object({
-      pollId: z.string(),
-      gameId: z.string(),
+      pollId: z.string().min(1),
+      gameId: z.string().min(1),
     });
     const { pollId, gameId } = getGuessesParams.parse(request);
 
