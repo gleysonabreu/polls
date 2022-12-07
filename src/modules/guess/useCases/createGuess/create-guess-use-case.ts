@@ -13,14 +13,14 @@ export class CreateGuessUseCase {
 
   async execute(request: CreateGuessDTO) {
     const createGuessParams = z.object({
-      pollId: z.string(),
-      gameId: z.string(),
-      userId: z.string(),
+      pollId: z.string().min(1),
+      gameId: z.string().min(1),
+      userId: z.string().min(1),
     });
 
     const createGuessBody = z.object({
-      firstTeamPoints: z.number().nonnegative(),
-      secondTeamPoints: z.number().nonnegative(),
+      firstTeamPoints: z.number().nonnegative().min(0),
+      secondTeamPoints: z.number().nonnegative().min(0),
     });
 
     const { pollId, gameId, userId } = createGuessParams.parse(request);
