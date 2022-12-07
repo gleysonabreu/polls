@@ -16,7 +16,9 @@ export class GamesRepositoryInMemory implements GamesRepository {
   };
 
   async getGameGuesses(data: GetGameGuessesData): Promise<GetGameGuesses> {
-    throw new Error('Implementing method');
+    return {
+      id: data.gameId,
+    } as GetGameGuesses;
   };
 
   async getGamesWithPagination(_data: GamesWithPaginationData): Promise<GamesWithPagination> {
