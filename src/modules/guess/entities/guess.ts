@@ -1,5 +1,5 @@
 export type Guess = {
-  id: string
+  id?: string
   firstTeamPoints: number
   secondTeamPoints: number
   gameId: string

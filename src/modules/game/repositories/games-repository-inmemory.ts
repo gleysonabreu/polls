@@ -12,7 +12,12 @@ export class GamesRepositoryInMemory implements GamesRepository {
   private games: Game[] = [];
 
   async findById(id: string): Promise<Game | null> {
-    throw new Error('Implementing method');
+    const game = this.games.find(game => game.id === id);
+    if (game) {
+      return game;
+    } else {
+      return null;
+    }
   };
 
   async getGameGuesses(data: GetGameGuessesData): Promise<GetGameGuesses> {

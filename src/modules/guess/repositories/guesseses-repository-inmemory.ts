@@ -9,10 +9,19 @@ export class GuessesRepositoryInMemory implements GuessesRepository {
   };
 
   async create(data: CreateGuess): Promise<Guess> {
-    throw new Error('Implement method');
+    const guess = { ...data, createdAt: new Date() }
+    this.guesses.push(guess);
+
+    return guess;
   };
 
   async findGuessByGameIdAndParticipantId(gameId: string, participantId: string): Promise<Guess | null> {
-    throw new Error('Implement method');
+    const guess = this.guesses.find(guess => guess.gameId === gameId && guess.participantId === participantId);
+
+    if (guess) {
+      return guess;
+    } else {
+      return null;
+    }
   };
 }

@@ -11,4 +11,6 @@ export type PaticipantByPollId = (Participant & {
   }[];
 });
 
-export type CreateParticipation = Omit<Participant, 'id'>;
+export type CreateParticipation = Participant & {
+  id?: string | undefined;
+};
