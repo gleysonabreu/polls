@@ -3,12 +3,17 @@ import * as jwt from '../../../../ports/adapters/jwt';
 
 import { z } from "zod";
 
+import { Auth } from "providers/auth/auth";
+
 type Request = {
   access_token: string;
 }
 
 export class CreateUserUseCase {
-  constructor(private usersRepository: UsersRepository) { }
+  constructor(
+    private usersRepository: UsersRepository,
+    private auth: Auth
+  ) { }
 
   async execute(request: Request) {
     const createUserBody = z.object({
@@ -17,14 +22,7 @@ export class CreateUserUseCase {
 
     const { access_token } = createUserBody.parse(request);
 
-    const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      }
-    });
-
-    const userData = await userResponse.json();
+    const userData = await this.auth.getUser(access_token);
 
     const userInfoSchema = z.object({
       id: z.string(),
