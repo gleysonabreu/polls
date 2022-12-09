@@ -9,12 +9,14 @@ export class UsersRepositoryInMemory implements UsersRepository {
     return this.users.length;
   }
   async create(user: CreateUser): Promise<User> {
-    throw new Error('Implement create method');
+    const data = { ...user, id: user.id as string, createdAt: new Date() };
+    this.users.push(data);
+    return data;
   };
   async findByGoogleId(id: string): Promise<User | null> {
     throw new Error('Implement findByGoogleId method');
   };
   async getHomepage(): Promise<GetHomePage[]> {
-    throw new Error('Implement getHomepage method');
+    return this.users.slice(0, 4);
   };
 }

@@ -5,4 +5,6 @@ export type GetHomePage = {
   avatarUrl: string | null;
 }
 
-export type CreateUser = Omit<User, 'id' | 'createdAt'>
+export type CreateUser = Omit<User, 'id' | 'createdAt'> & {
+  id?: string;
+}
