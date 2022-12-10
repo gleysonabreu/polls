@@ -14,7 +14,12 @@ export class UsersRepositoryInMemory implements UsersRepository {
     return data;
   };
   async findByGoogleId(id: string): Promise<User | null> {
-    throw new Error('Implement findByGoogleId method');
+    const user = this.users.find(user => user.googleId === id);
+    if (user) {
+      return user;
+    } else {
+      return null;
+    }
   };
   async getHomepage(): Promise<GetHomePage[]> {
     return this.users.slice(0, 4);
