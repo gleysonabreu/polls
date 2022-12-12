@@ -8,7 +8,8 @@ export class CreatePollUseCase {
 
   async execute(request: CreatePollDTO) {
     const createPoolBody = z.object({
-      title: z.string().min(1)
+      title: z.string().min(1),
+      userId: z.string().min(1),
     });
 
     const totalPolls = await this.pollsRepository.countByOwnerId(request.userId);
@@ -17,14 +18,14 @@ export class CreatePollUseCase {
       throw new Error('You have reached the poll creation limit.');
     }
 
-    const { title } = createPoolBody.parse(request);
+    const { title, userId } = createPoolBody.parse(request);
     const generate = new ShortUniqueId({ length: 6 });
     const code = String(generate()).toUpperCase();
 
     const poll = await this.pollsRepository.create({
       title,
       code,
-      userId: request.userId,
+      userId,
     });
 
     return poll;

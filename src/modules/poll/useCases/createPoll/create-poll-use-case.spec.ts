@@ -37,6 +37,14 @@ describe('Create Poll Use Case', () => {
     await expect(promise).rejects.toBeInstanceOf(ZodError);
   });
 
+  it('should not be able to create a poll if there no userId', async () => {
+    const { sut } = makeSut();
+    const poll = mockPoll();
+    poll.userId = '';
+
+    const promise = sut.execute(poll);
+    await expect(promise).rejects.toBeInstanceOf(ZodError);
+  });
 
   it('should be able to create an poll', async () => {
     const { sut } = makeSut();
