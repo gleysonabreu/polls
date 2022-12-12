@@ -8,7 +8,7 @@ export class CreatePollUseCase {
 
   async execute(request: CreatePollDTO) {
     const createPoolBody = z.object({
-      title: z.string()
+      title: z.string().min(1)
     });
 
     const totalPolls = await this.pollsRepository.countByOwnerId(request.userId);
