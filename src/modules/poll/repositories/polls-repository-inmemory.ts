@@ -25,7 +25,12 @@ export class PollsRepositoryInMemory implements PollsRepository {
   }
 
   async findById(id: string): Promise<Poll | null> {
-    throw new Error('Implement findById method.')
+    const poll = this.polls.find(poll => poll.id === id);
+    if (poll) {
+      return poll;
+    }
+
+    return null;
   }
 
   async getPollsUser(data: GetPollsUserPagination): Promise<Poll[]> {
