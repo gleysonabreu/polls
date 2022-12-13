@@ -14,8 +14,8 @@ export class PollsRepositoryInMemory implements PollsRepository {
     return this.polls.filter(poll => poll.ownerId === id).length;
   }
 
-  async countPollsUser(userId: string): Promise<number> {
-    throw new Error('Implement countPollsUser method.')
+  async countPollsUser(_userId: string): Promise<number> {
+    return this.polls.length;
   }
 
   async create(data: CreatePoll): Promise<Poll> {
@@ -33,8 +33,8 @@ export class PollsRepositoryInMemory implements PollsRepository {
     return null;
   }
 
-  async getPollsUser(data: GetPollsUserPagination): Promise<Poll[]> {
-    throw new Error('Implement getPollsUser method.')
+  async getPollsUser({ userId, skip, take }: GetPollsUserPagination): Promise<Poll[]> {
+    return this.polls;
   }
 
   async findPollByCodeWithUserParticipants({ code, userId }: PollByCodeWithParticipants): Promise<GetPollByCode | null> {
