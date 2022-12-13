@@ -1,4 +1,6 @@
 import { ParticipantsRepository } from "../../../participant/repositories/participants-repository";
+import { PollsRepository } from "../../../../modules/poll/repositories/polls-repository";
+
 import z from 'zod';
 
 type GetRankingUseCaseProps = {
@@ -6,7 +8,10 @@ type GetRankingUseCaseProps = {
 };
 
 export class GetRankingUseCase {
-  constructor(private participantsRepository: ParticipantsRepository) { }
+  constructor(
+    private participantsRepository: ParticipantsRepository,
+    private pollsRepository: PollsRepository,
+  ) { }
 
   async execute(request: GetRankingUseCaseProps) {
     const getPollParam = z.object({
@@ -14,6 +19,12 @@ export class GetRankingUseCase {
     });
 
     const { pollId } = getPollParam.parse(request);
+
+    const poll = await this.pollsRepository.findById(pollId);
+    if (!poll) {
+      throw new Error('This poll does not exist!');
+    }
+
     const participants = await this.participantsRepository.getParticipantsByPollId(pollId);
 
     const rankingPoints = participants.map(participant => {
