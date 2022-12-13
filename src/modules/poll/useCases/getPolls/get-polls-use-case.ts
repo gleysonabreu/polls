@@ -11,7 +11,12 @@ export class GetPollsUseCase {
       perPage: z.string().optional(),
     });
 
+    const bodyUserPolls = z.object({
+      userId: z.string().min(1),
+    });
+
     const { page, perPage } = paginationPollsQuery.parse(request);
+    const { userId } = bodyUserPolls.parse(request);
 
     const pageCalc = Number(page || 1) - 1;
     const take = Number(perPage) || 10;
@@ -19,7 +24,7 @@ export class GetPollsUseCase {
 
     const totalPolls = await this.pollsRepository.countPollsUser(request.userId);
     const polls = await this.pollsRepository.getPollsUser({
-      userId: request.userId,
+      userId,
       take,
       skip
     });

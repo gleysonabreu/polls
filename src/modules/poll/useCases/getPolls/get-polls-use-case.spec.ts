@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { PollsRepository } from "modules/poll/repositories/polls-repository";
+import { ZodError } from "zod";
 import { PollsRepositoryInMemory } from "../../../../modules/poll/repositories/polls-repository-inmemory";
 import { GetPollsController } from "./get-polls-controller";
 import { GetPollsUseCase } from "./get-polls-use-case";
@@ -41,5 +42,14 @@ describe('Get Polls Use Case', () => {
     const { polls, totalPolls } = await sut.execute(getPolls);
     expect(totalPolls).toEqual(0);
     expect(polls).toBeInstanceOf(Array);
+  });
+
+  it('should not be able to get polls if there no userId', async () => {
+    const { sut } = makeSut();
+    const getPolls = mockGetPolls();
+    getPolls.userId = '';
+
+    const promise = sut.execute(getPolls)
+    await expect(promise).rejects.toBeInstanceOf(ZodError);
   });
 });
