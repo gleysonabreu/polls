@@ -10,7 +10,7 @@ export class GetRankingUseCase {
 
   async execute(request: GetRankingUseCaseProps) {
     const getPollParam = z.object({
-      pollId: z.string(),
+      pollId: z.string().min(1),
     });
 
     const { pollId } = getPollParam.parse(request);

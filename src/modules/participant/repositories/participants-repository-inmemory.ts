@@ -12,8 +12,8 @@ export class ParticipantsRepositoryInMemory implements ParticipantsRepository {
   async getTotalPollsUserJoined(userId: string): Promise<number> {
     throw new Error();
   };
-  async getParticipantsByPollId(id: string): Promise<PaticipantByPollId[]> {
-    throw new Error();
+  async getParticipantsByPollId(_id: string): Promise<PaticipantByPollId[]> {
+    return this.particpants as PaticipantByPollId[];
   };
   async findParticipantByPollIdAndUserId(pollId: string, userId: string): Promise<Participant | null> {
     const participant = this.particpants.find(participant => participant.pollId === pollId && participant.userId === userId);
